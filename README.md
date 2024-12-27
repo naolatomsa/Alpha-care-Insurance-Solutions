@@ -70,8 +70,8 @@ dvc push
 
 # How to use this repo
 
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/naolatomsa/Alpha-care-Insurance-Solutions.git
+cd Alpha-care-Insurance-Solutions
 python -m venv env
 source env/bin/activate  # On Windows: env\Scripts\activate
 pip install -r requirements.txt
