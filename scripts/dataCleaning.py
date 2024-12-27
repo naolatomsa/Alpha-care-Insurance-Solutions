@@ -47,6 +47,7 @@ def identify_outliers(data, columns):
         plt.xlabel(column)
         plt.legend()
         plt.show()
+    
 
     return outliers
 
@@ -59,4 +60,3 @@ def cap_outliers(data, column):
     upper_bound = Q3 + 1.5 * IQR
     data[column] = data[column].clip(lower=lower_bound, upper=upper_bound)
     return data
-
