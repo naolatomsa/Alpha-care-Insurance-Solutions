@@ -50,3 +50,73 @@ def plot_correlation_matrix(data, columns=None):
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
     plt.title("Correlation Matrix")
     plt.show()
+
+
+def plot_grouped_bar_chart(data, geography):
+    """
+    Plot a grouped bar chart comparing TotalPremium and TotalClaims across regions.
+
+    Parameters:
+        data (pd.DataFrame): The DataFrame containing the data.
+        geography (str): The column name for geographical grouping.
+
+    Returns:
+        None: Displays the bar chart.
+    """
+    grouped_data = data.groupby(geography)[['TotalPremium', 'TotalClaims']].mean()
+
+    grouped_data.plot(kind='bar', figsize=(12, 6))
+    plt.title(f"Comparison of TotalPremium and TotalClaims Across {geography}")
+    plt.xlabel(geography)
+    plt.ylabel("Average Value")
+    plt.xticks(rotation=45, ha='right')
+    plt.legend(title="Metric")
+    plt.tight_layout()
+    plt.show()
+    
+    
+def plot_correlation_heatmap(data, numeric_columns):
+    """
+    Plot a heatmap of correlation across numerical features.
+
+    Parameters:
+        data (pd.DataFrame): The DataFrame containing the data.
+        numeric_columns (list): List of numerical columns to include in the correlation matrix.
+
+    Returns:
+        None: Displays the heatmap.
+    """
+    correlation_matrix = data[numeric_columns].corr()
+
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f')
+    plt.title("Correlation Heatmap of Numerical Features")
+    plt.tight_layout()
+    plt.show()
+    
+def plot_stacked_area(data, time_column, category_column):
+    """
+    Plot a stacked area chart showing changes in category distribution over time.
+
+    Parameters:
+        data (pd.DataFrame): The DataFrame containing the data.
+        time_column (str): The column representing time (e.g., 'Year').
+        category_column (str): The column representing the categorical variable (e.g., 'CoverType').
+
+    Returns:
+        None: Displays the stacked area chart.
+    """
+    # Count the occurrences of each category over time
+    grouped_data = data.groupby([time_column, category_column]).size().unstack().fillna(0)
+
+    grouped_data.plot(kind='area', stacked=True, figsize=(12, 6), alpha=0.7)
+    plt.title(f"Changes in {category_column} Over {time_column}")
+    plt.xlabel(time_column)
+    plt.ylabel("Count")
+    plt.legend(title=category_column, bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    plt.show()
+
+
+
+
