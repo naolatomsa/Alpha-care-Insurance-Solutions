@@ -2,3 +2,5 @@
 # data
 # data/MachineLearningRating_v3.txt
 *.txt
+*.csv
+*.txt.dvc
