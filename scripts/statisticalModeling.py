@@ -20,6 +20,9 @@ def prepare_data(data, target_column):
     Returns:
         X_train, X_test, y_train, y_test: Training and testing datasets for features and target.
     """
+    #remove unnamed column
+    data = data.loc[:, ~data.columns.str.contains('^Unnamed')]
+
     # Handling Missing Data
     data = data.dropna(thresh=len(data) * 0.7, axis=1)  # Remove columns with >30% missing values
     data = data.fillna(data.median(numeric_only=True))  # Impute numerical columns with median
@@ -43,7 +46,12 @@ def prepare_data(data, target_column):
     y = data[target_column]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    return X_train, X_test, y_train, y_test
+    X_train = X_train.dropna()
+    X_test = X_test.dropna()
+    y_train = y_train.dropna()
+    y_test = y_test.dropna()
+    
+    return X_train, X_test, y_train, y_test, data
 
 # Model Building
 def build_models():
@@ -101,25 +109,27 @@ def train_and_evaluate_models(models, X_train, X_test, y_train, y_test):
         print(f"{name} - MAE: {mae:.4f}, MSE: {mse:.4f}, R2: {r2:.4f}")
     return results
 
+# Import SHAP
+import shap
+
 # Feature Importance Analysis
-def analyze_feature_importance(model, X_train):
-    """
-    Analyzes and visualizes feature importance using SHAP values.
+def analyze_feature_importance_all(models, X_train):
+    for name, model in models.items():
+        print(f"Feature Importance for {name}:")
+        if name in ["Random Forest", "XGBoost"]:
+            # Use TreeExplainer for tree-based models
+            explainer = shap.TreeExplainer(model)
+            shap_values = explainer.shap_values(X_train)
+            shap.summary_plot(shap_values, X_train, plot_type="bar")
+        elif name == "Linear Regression":
+            # Use Coefficients for Linear Regression
+            coef = model.coef_
+            features = X_train.columns
+            feature_importance = pd.DataFrame({
+                'Feature': features,
+                'Importance': coef
+            }).sort_values(by='Importance', ascending=False)
+            print(feature_importance)
+        else:
+            print(f"Feature importance method not implemented for {name}.\n")
 
-    Args:
-        model: The trained model to analyze.
-        X_train (DataFrame): Training features.
-    """
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(X_train)
-    shap.summary_plot(shap_values, X_train, plot_type="bar")
-
-# Main Execution Example
-# Uncomment the following lines to run the code
-# data = pd.read_csv("your_dataset.csv")  # Replace with your dataset file
-# target_column = "TotalPremium"  # Replace with your target column
-# 
-# X_train, X_test, y_train, y_test = prepare_data(data, target_column)
-# models = build_models()
-# results = train_and_evaluate_models(models, X_train, X_test, y_train, y_test)
-# analyze_feature_importance(models["Random Forest"], X_train)
