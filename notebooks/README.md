@@ -26,3 +26,33 @@
 ## Visualization:
 
     Create at least 3 meaningful and visually appealing plots to highlight key insights.
+
+
+
+# A/B Hypothesis Testing
+
+## Objective: Accept or reject null hypotheses regarding risk and profit differences across various segments:
+        Provinces
+        Zip codes
+        Gender
+## Key Steps:
+        Select Metrics: Identify KPIs for analysis.
+        Data Segmentation: Create control (Group A) and test (Group B) groups.
+        Statistical Testing: Perform chi-squared tests, t-tests, or z-tests.
+        Analyze Results: Evaluate p-values to determine statistical significance.
+
+# Statistical Modeling
+
+## Objective: Build and evaluate predictive models for TotalPremium and TotalClaims.
+## Key Steps:
+        Data Preparation:
+            Handle missing data.
+            Create new features.
+            Encode categorical data.
+            Split data into training and testing sets.
+        Model Building:
+            Implement Linear Regression, Random Forests, and XGBoost.
+        Model Evaluation:
+            Use metrics like MAE, MSE, and R² to assess performance.
+        Feature Importance:
+            Analyze using SHAP or LIME for model interpretability.
