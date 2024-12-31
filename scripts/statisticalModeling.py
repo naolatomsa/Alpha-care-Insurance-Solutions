@@ -10,16 +10,7 @@ import shap
 
 # Data Preparation
 def prepare_data(data, target_column):
-    """
-    Handles missing data, encodes categorical variables, performs feature engineering, and splits the dataset into training and testing sets.
 
-    Args:
-        data (DataFrame): The dataset to prepare.
-        target_column (str): The name of the target column.
-
-    Returns:
-        X_train, X_test, y_train, y_test: Training and testing datasets for features and target.
-    """
     #remove unnamed column
     data = data.loc[:, ~data.columns.str.contains('^Unnamed')]
 
@@ -55,12 +46,7 @@ def prepare_data(data, target_column):
 
 # Model Building
 def build_models():
-    """
-    Initializes the models to be used for training.
 
-    Returns:
-        dict: A dictionary of initialized models.
-    """
     models = {
         "Linear Regression": LinearRegression(),
         "Random Forest": RandomForestRegressor(random_state=42),
@@ -70,16 +56,7 @@ def build_models():
 
 # Model Evaluation
 def evaluate_model(y_true, y_pred):
-    """
-    Evaluates a model's performance using MAE, MSE, and R² metrics.
 
-    Args:
-        y_true (array-like): True target values.
-        y_pred (array-like): Predicted target values.
-
-    Returns:
-        tuple: MAE, MSE, and R² score.
-    """
     mae = mean_absolute_error(y_true, y_pred)
     mse = mean_squared_error(y_true, y_pred)
     r2 = r2_score(y_true, y_pred)
@@ -87,19 +64,7 @@ def evaluate_model(y_true, y_pred):
 
 # Model Training and Evaluation
 def train_and_evaluate_models(models, X_train, X_test, y_train, y_test):
-    """
-    Trains and evaluates the models, printing and returning their performance metrics.
 
-    Args:
-        models (dict): Dictionary of models to train.
-        X_train (DataFrame): Training features.
-        X_test (DataFrame): Testing features.
-        y_train (Series): Training target.
-        y_test (Series): Testing target.
-
-    Returns:
-        dict: A dictionary of model performance metrics.
-    """
     results = {}
     for name, model in models.items():
         model.fit(X_train, y_train)
